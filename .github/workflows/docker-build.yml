@@ -1,0 +1,30 @@
+name: 🔁 Docker Compose Build Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v3
+
+    - name: 🐳 Set up Docker
+      uses: docker/setup-buildx-action@v3
+
+    - name: 🔧 Build Docker Images (Frontend, Backend)
+      run: |
+        docker-compose -f docker-compose.yml build
+
+    - name: ✅ Run Containers (Test)
+      run: |
+        docker-compose -f docker-compose.yml up -d
+        sleep 15  # wait for services to start
+        curl --fail http://localhost:5000/api
+        curl --fail http://localhost:3000 || true
+        docker-compose down
