@@ -14,16 +14,16 @@ jobs:
     - name: 📥 Checkout Code
       uses: actions/checkout@v3
 
-    - name: 🐳 Set up Docker
+    - name: 🐳 Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
     - name: 🔧 Build Docker Images (Frontend, Backend)
       run: |
-        docker-compose -f docker-compose.yml build
+        docker compose -f docker-compose.yml build
 
     - name: ✅ Run Containers (Test)
       run: |
-        docker-compose -f docker-compose.yml up -d
+        docker compose -f docker-compose.yml up -d
         sleep 15  # wait for services to start
         curl --fail http://localhost:5000/api
         curl --fail http://localhost:3000 || true
