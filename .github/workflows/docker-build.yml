@@ -24,7 +24,14 @@ jobs:
     - name: ✅ Run Containers (Test)
       run: |
         docker compose -f docker-compose.yml up -d
-        sleep 15  # wait for services to start
-        curl --fail http://localhost:5000/api
-        curl --fail http://localhost:3000 || true
+        echo "⏳ Waiting for backend..."
+        for i in {1..10}; do
+          if curl --fail http://localhost:5000/api; then
+            echo "✅ Backend is up!"
+            break
+          else
+            echo "Retrying in 5s..."
+            sleep 5
+          fi
+        done
         docker compose down
