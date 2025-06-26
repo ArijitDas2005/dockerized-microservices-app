@@ -27,4 +27,4 @@ jobs:
         sleep 15  # wait for services to start
         curl --fail http://localhost:5000/api
         curl --fail http://localhost:3000 || true
-        docker-compose down
+        docker compose down
