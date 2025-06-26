@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dockerized App</title>
+  <title>Dockerized Microservices App</title>
+  <script>
+    async function fetchMessage() {
+      try {
+        const response = await fetch('http://localhost:5000/api');
+        const data = await response.json();
+        document.getElementById("api-message").textContent = data.message;
+      } catch (err) {
+        document.getElementById("api-message").textContent = "Could not connect to backend.";
+      }
+    }
+
+    window.onload = fetchMessage;
+  </script>
 </head>
 <body>
-  <h1>Hello from Frontend (HTML via Nginx)</h1>
-  <p>This is a static site served by Docker using Nginx.</p>
+  <h1>👋 Hello from the Frontend (Nginx)</h1>
+  <p><strong>Backend says:</strong> <span id="api-message">Loading...</span></p>
 </body>
 </html>
